@@ -28,24 +28,19 @@ def user_input_features():
             'f3': petal_width}
     
     features = pd.DataFrame(data, index=[0])
-    #features = pdml.ModalFrame(data, index=[0])
     return features
 
 df = user_input_features()
 x, y = df.iloc[:,:-4],df.iloc[:,-1]
-#x, y = df.iloc[[0,1]],df.iloc[[0,0]]
 df_dmatrix = xgb.DMatrix(data=x, label=y)
 
 st.subheader('User Input Features')
 st.write(df)
-#st.write(df_dmatrix)
 
 iris = datasets.load_iris()
 X = iris.data
 Y = iris.target
 
-#clf = RandomForestClassifier()
-#clf.fit(X,Y)
 x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, random_state=0) 
 
 train = xgb.DMatrix(x_train, label=y_train)
@@ -67,27 +62,12 @@ xg_reg = xgb.XGBClassifier(objective ='reg:linear', colsample_bytree = 0.3, lear
 xg_reg.fit(x_train,y_train)
 
 names = xg_reg.get_booster().feature_names
-#st.write(names)
 prediction1 = xg_reg.predict(df[names].iloc[[-1]])
-#f_names = model.feature_names
-#df = df[f_names]
-#prediction1 = model.predict(df_dmatrix)
-#prediction_proba = accuracy_score(y_test, prediction)
 
-#prediction = clf.predict(df)
-#prediction_proba = clf.predict_proba(df)
-#prediction = model.predict(df_dmatrix)
-#prediction_proba = model.predict_proba(df)
 prediction = xg_reg.predict(x_test)
 
 st.subheader('Class labels and their corresponding index number')
 st.write(iris.target_names)
-#st.write(x_test, df)
 
 st.subheader('Prediction')
-#st.write(iris.target_names[prediction])
-#st.write(prediction)
-#st.write(prediction1)
 st.write(iris.target_names[prediction1])
-
-
